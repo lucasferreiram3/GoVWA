@@ -29,6 +29,19 @@ jobs:
           root: ./
           paths:
             - ./
+  veracode_sast_pipeline_scan:
+    docker: 
+      - image: veracode/pipeline-scan:latest
+    working_directory: ./
+    steps:
+      # get the files from the previous job
+      - attach_workspace:
+          at: ./
+      - run:
+         name: "Veracode Pipeline Scan"
+         command: |
+           zip -r app.zip .
+           java -jar /opt/veracode/pipeline-scan.jar -vid $VID -vkey $VKEY -f app.zip
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
