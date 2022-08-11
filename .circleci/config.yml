@@ -41,6 +41,7 @@ jobs:
          name: "Run Veracode Pipeline Scan and create a baseline"
          command: |
            zip -r upload.zip ./
+           ls -l | grep app.zip
            java -jar /opt/veracode/pipeline-scan.jar -vid $VID -vkey $VKEY -f upload.zip 
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
