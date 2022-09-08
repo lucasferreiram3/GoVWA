@@ -24,7 +24,7 @@ jobs:
            go get all
            go mod download
            go mod vendor
-           mkdir app; cp . app/
+           mkdir app; cp -r . app/
            ls -lah
       - persist_to_workspace:
           root: ./
