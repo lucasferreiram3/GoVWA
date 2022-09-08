@@ -24,29 +24,16 @@ jobs:
            go get all
            go mod download
            go mod vendor
+           mkdir app; cp . app/
            ls -lah
       - persist_to_workspace:
           root: ./
           paths:
             - ./
-  veracode_sast_pipeline_scan:
-    docker: 
-      - image: veracode/pipeline-scan:latest
-    working_directory: ./
-    steps:
-      # get the files from the previous job
-      - attach_workspace:
-          at: ./
-      - run:
-         name: "Run Veracode Pipeline Scan and create a baseline"
-         command: |
-           zip -r upload.zip ./
-           ls -l | grep app.zip
-           java -jar /opt/veracode/pipeline-scan.jar -vid $VID -vkey $VKEY -f upload.zip 
+
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   sample: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build
-      - veracode_sast_pipeline_scan
